@@ -1,0 +1,4 @@
+FROM python:3.5-jessie
+RUN apt-get update && apt-get install libev4 libev-dev && apt-get clean
+RUN cassandra-driver==3.13.0
+

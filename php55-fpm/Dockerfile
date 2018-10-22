@@ -19,3 +19,9 @@ RUN apt-get --no-install-recommends -y install php5 php5-cli php5-fpm php5-readl
 	php-pear php-log
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+
+RUN apt-get -qy autoremove
+
+CMD ["php5-fpm", "-F"]
+
+EXPOSE 9000

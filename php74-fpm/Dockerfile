@@ -1,6 +1,6 @@
 FROM phpdockerio/php74-fpm
 
-COPY --from=composer:2.1.9 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.1.14 /usr/bin/composer /usr/bin/composer
 COPY --from=composer:1.10.23 /usr/bin/composer /usr/bin/composer1
 
 RUN apt-get update \

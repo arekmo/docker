@@ -1,6 +1,6 @@
 FROM phpdockerio/php80-fpm
 
-COPY --from=composer:2.1.9 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.1.14 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install git ssh-client curl software-properties-common \

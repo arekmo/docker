@@ -1,27 +1,14 @@
-FROM debian:wheezy
-ENV DEBIAN_FRONTEND noninteractive
+FROM php:5.5-fpm
 
-RUN apt-get update
-RUN apt-get -y install wget curl git procps nano unzip
+RUN apt-get update && apt-get install -y --no-install-recommends curl git wget
 
-RUN wget -O- http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+RUN curl -sSLf \
+        -o /usr/local/bin/install-php-extensions \
+        https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions amqp apcu bcmath gmp gd imagick memcached mongodb mysqli pdo_mysql pdo_pgsql soap zip xdebug xhprof
 
-RUN echo "deb http://packages.dotdeb.org wheezy all" > /etc/apt/sources.list.d/dotdeb.list \
-     && echo "deb-src http://packages.dotdeb.org wheezy all" >> /etc/apt/sources.list.d/dotdeb.list
-
-RUN echo "deb http://packages.dotdeb.org wheezy-php55 all" >> /etc/apt/sources.list.d/dotdeb-php55.list \
- && echo "deb-src http://packages.dotdeb.org wheezy-php55 all" >> /etc/apt/sources.list.d/dotdeb-php55.list
-
-RUN apt-get clean && apt-get update
-
-RUN apt-get --no-install-recommends -y install php5 php5-cli php5-fpm php5-readline php5-redis php5-curl php5-gd php5-imagick php5-intl \
-	php5-mcrypt php5-memcache php5-mysqlnd php5-pgsql php5-memcached php5-mongo \
-	php-pear php-log
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
-
-RUN apt-get -qy autoremove
-
-CMD ["php5-fpm", "-F"]
+RUN install-php-extensions @fix_letsencrypt @composer-1 && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 EXPOSE 9000

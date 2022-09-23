@@ -1,11 +1,14 @@
-FROM phpdockerio/php71-fpm
+FROM php:7.1-fpm-alpine
 
-RUN apt-get update && apt search php7 \
-    && apt-get -y --no-install-recommends install git ssh-client curl software-properties-common \
-    php7.1-amqp php7.1-bcmath php7.1-gd php7.1-gmp php7.1-imagick php7.1-memcached \
-    php7.1-mysql php7.1-pgsql php7.1-soap php7.1-xdebug php7.1-xhprof php7.1-mongodb \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN apk update && apk add curl git wget
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.4.1
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer1 --version=1.10.23
+RUN curl -sSLf \
+        -o /usr/local/bin/install-php-extensions \
+        https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions amqp apcu bcmath gmp gd imagick memcached mongodb mysqli pdo_mysql pdo_pgsql soap zip xdebug xhprof
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.4.2
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer1 --version=1.10.26
+
+EXPOSE 9000

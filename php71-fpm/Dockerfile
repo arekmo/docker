@@ -8,7 +8,7 @@ RUN curl -sSLf \
     chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions amqp apcu bcmath gmp gd imagick memcached mongodb mysqli pdo_mysql pdo_pgsql soap zip xdebug xhprof
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.4.2
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer --version=2.2.18
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer1 --version=1.10.26
 
 EXPOSE 9000
